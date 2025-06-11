@@ -8,7 +8,7 @@ import tensorflow as tf
 
 app = FastAPI()
 
-MODEL = tf.keras.models.load_model("../models/potatoes_v1.h5")
+MODEL = tf.keras.models.load_model("/home/merrahal/Desktop/detection/models/potatoes_v1.h5")#TODO : Update the path toa general path to the model so the professor can use it in here laptop
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 

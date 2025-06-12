@@ -1,122 +1,165 @@
-# 🥔 Potato Disease Classification System
+# 🥔 Système de Classification des Maladies de la Pomme de Terre
 
-A full-stack machine learning application that uses CNN to classify potato diseases from leaf images. The system can detect Early Blight, Late Blight, and identify Healthy potato plants.
+Système d'intelligence artificielle utilisant un réseau de neurones convolutifs (CNN) pour détecter et classifier les maladies des pommes de terre à partir d'images de feuilles.
 
-### Option 1: Using Makefile (Linux/macOS/WSL)
+## 📋 Prérequis
+
+Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur votre système :
+
+### Pour Windows :
+- **Python 3.8+** : Téléchargez depuis [python.org](https://python.org)
+- **Node.js 14+** : Téléchargez depuis [nodejs.org](https://nodejs.org)
+
+### Pour Linux/WSL :
+- **Python 3.8+** : `sudo apt install python3 python3-pip python3-venv`
+- **Node.js 14+** : `sudo apt install nodejs npm`
+
+## 🚀 Installation et Configuration
+
+### Option 1 : Installation Automatique
+
+#### Windows
+1. Ouvrez PowerShell ou l'invite de commandes en tant qu'administrateur
+2. Naviguez vers le répertoire du projet :
+   ```powershell
+   cd C:\chemin\vers\le\projet
+   ```
+3. Exécutez le script de configuration :
+   ```powershell
+   .\setup.bat
+   ```
+
+#### Linux/WSL
+1. Ouvrez un terminal
+2. Naviguez vers le répertoire du projet :
+   ```bash
+   cd /chemin/vers/le/projet
+   ```
+3. Rendez le script exécutable et lancez-le :
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
+
+#### Utilisation de Make (Linux/WSL/Git Bash)
 ```bash
-make setup    # Setup both backend and frontend
-make start    # Get instructions to start both services
+# Configuration complète du projet
+make setup
+
+# Ou configuration séparée
+make setup-backend    # Configuration du backend Python
+make setup-frontend   # Configuration du frontend React
 ```
 
-### Option 2: Using Setup Scripts
+### Option 2 : Installation Manuelle
 
-**Linux/macOS/Git Bash:**
-```bash
-chmod +x setup.sh
-./setup.sh
-```
+#### 1. Configuration du Backend (FastAPI)
 
-**Windows Command Prompt:**
-```cmd
-setup.bat
-```
+**Windows :**
+```powershell
+# Créer l'environnement virtuel Python
+python -m venv myenv
 
-### Option 3: Manual Setup
+# Activer l'environnement virtuel
+myenv\Scripts\activate
 
-**Backend Setup:**
-```bash
-python3 -m venv myenv
-source myenv/bin/activate  # On Windows: myenv\Scripts\activate
+# Installer les dépendances
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-**Frontend Setup:**
+#### 2. Configuration du Frontend (React)
+
+**Tous les systèmes :**
 ```bash
+# Naviguer vers le dossier frontend
 cd frontend
+
+# Installer les dépendances Node.js
 npm install
+
+# Retourner à la racine du projet
+cd ..
 ```
 
-## 📋 Prerequisites
+## 🏃‍♂️ Démarrage de l'Application
 
-- Python 3.8+
-- Node.js 14+ and npm
-- Git (optional, for cloning)
+### Méthode 1 : Démarrage Manuel (2 terminaux requis)
 
-## 🏃‍♂️ Running the Application
+#### Terminal 1 - Backend (API FastAPI)
 
-Open **two terminals**:
-
-**Terminal 1 (Backend):**
-```bash
+**Windows :**
+```powershell
+# Depuis la racine du projet
 cd api
-source ../myenv/bin/activate  # Windows: ..\myenv\Scripts\activate
+..\myenv\Scripts\activate
 python main.py
 ```
 
-**Terminal 2 (Frontend):**
+**Linux/WSL :**
 ```bash
+# Depuis la racine du projet
+cd api
+source ../myenv/bin/activate
+python main.py
+```
+
+#### Terminal 2 - Frontend (React)
+
+**Tous les systèmes :**
+```
+# Depuis la racine du projet
 cd frontend
 npm start
 ```
 
-Access the application:
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:8000
-- **API Docs:** http://localhost:8000/docs
+### Méthode 2 : Utilisation de Make (Linux/WSL/Git Bash)
+
+```bash
+# Démarrer le backend dans un terminal
+make start-backend
+
+# Démarrer le frontend dans un autre terminal
+make start-frontend
+
+# Ou afficher les instructions complètes
+make start
+```
 
 
+Une fois l'application démarrée, vous pouvez accéder aux services suivants :
+
+- **Interface Utilisateur (Frontend)** : http://localhost:3000
+- **API Backend** : http://localhost:8000
+
+## 🛠️ Commandes Utiles
+
+### Avec Make (Linux/WSL/Git Bash)
+```bash
+make help           # Afficher toutes les commandes disponibles
+make check          # Vérifier la configuration du projet
+make stop           # Arrêter tous les services
+make clean          # Nettoyer les fichiers cache
+make clean-all      # Suppression complète (venv + node_modules)
+```
+
+### Arrêt des Services
+
+**Windows :**
+- Utilisez `Ctrl+C` dans chaque terminal pour arrêter les services
+
+**Linux/WSL :**
+```bash
+# Arrêter tous les processus liés au projet
+make stop
+
+# Ou manuellement
+pkill -f "python.*main.py"
+pkill -f "npm.*start"
+```
 
 
-
-
-## Architecture
-
-1- Direct Backend Inference
-
-Frontend (user uploads image)
-   ↓
-Backend (FastAPI loads model + runs prediction)
-   ↓
-Returns result to frontend
-
-Pros:
-
-    Easy to build
-    No extra setup (no Docker, no external services)
-    Good for learning, small apps
-
-Cons:
-
-    Your backend becomes heavy
-    Only works well if your backend is in Python
-    You must restart the server if the model changes
-    Doesn't scale well for many users
-
-2- TensorFlow Serving
-
-run the model in a separate server, and the backend only sends prediction requests
-
-    * save the model (model.save("my_model/1"))
-    * run TensorFlow Serving (usually in Docker) to host it   ```docker run -p 8501:8501 ...``` This creates an HTTP API like http://localhost:8501/v1/models/my_model:predict
-    the backend sends images to that URL and gets predictions.
-
-
-Frontend (user uploads image)
-   ↓
-Backend (forwards image to TensorFlow Serving API)
-   ↓
-TensorFlow Serving (model runs here → returns prediction)
-   ↓
-Backend → Frontend
-
-Pros:
-
-    Backend becomes lighter (no model loading)
-    Works with any backend language (Node.js, Go, etc.)
-    Supports model versioning
-    Better for production and scaling
-Cons:
-
-    Requires Docker or setup
-    Slightly more complex
-    You need to handle communication between backend and model server
+1. Accédez à l'interface web : http://localhost:3000
+2. Téléchargez une image de feuille de pomme de terre
+3. Cliquez sur "Analyser" pour obtenir le diagnostic
+4. Consultez les résultats de classification et les recommandations

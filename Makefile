@@ -21,7 +21,7 @@ else
     MKDIR = mkdir -p
 endif
 
-.PHONY: help setup setup-backend setup-frontend start start-backend start-frontend clean clean-all
+.PHONY: help setup setup-backend setup-frontend start start-backend start-frontend stop stop-backend stop-frontend kill-all clean clean-all check
 
 # Default target
 all: help
@@ -40,9 +40,16 @@ help:
 	@echo "  make start-backend   # Start FastAPI backend server"
 	@echo "  make start-frontend  # Start React frontend server"
 	@echo ""
+	@echo "Stop Commands:"
+	@echo "  make stop            # Stop all running services"
+	@echo "  make stop-backend    # Stop FastAPI backend only"
+	@echo "  make stop-frontend   # Stop React frontend only"
+	@echo "  make kill-all        # Force kill all processes"
+	@echo ""
 	@echo "Clean Commands:"
 	@echo "  make clean           # Clean cache files"
 	@echo "  make clean-all       # Remove virtual environment and node_modules"
+	@echo "  make check           # Check project setup status"
 	@echo ""
 	@echo "Requirements:"
 	@echo "  - Python 3.8+ installed"
@@ -125,6 +132,43 @@ start-frontend: setup-frontend
 	@echo "🎨 Starting React frontend..."
 	@echo "Frontend will run on: http://localhost:3000"
 	cd $(FRONTEND_DIR) && npm start
+
+# Stop all services
+stop:stop-frontend stop-backend 
+	@echo "🛑 Stopping all services..."
+	@make stop-backend
+	@make stop-frontend
+	@echo "✅ All services stopped!"
+
+# Stop backend server
+stop-backend:
+	@echo "🛑 Stopping FastAPI backend server..."
+	@pkill -f "python.*main.py" 2>/dev/null || echo "No FastAPI backend process found"
+	@pkill -f "uvicorn" 2>/dev/null || echo "No uvicorn process found"
+	@lsof -ti:8000 | xargs kill -9 2>/dev/null || echo "No process using port 8000"
+	@echo "✅ Backend stopped!"
+
+# Stop frontend server
+stop-frontend:
+	@echo "🛑 Stopping React frontend server..."
+	@pkill -f "react-scripts" 2>/dev/null || echo "No React scripts process found"
+	@pkill -f "npm.*start" 2>/dev/null || echo "No npm start process found"
+	@lsof -ti:3000 | xargs kill -9 2>/dev/null || echo "No process using port 3000"
+	@echo "✅ Frontend stopped!"
+
+# Kill any leftover processes (force stop)
+kill-all:
+	@echo "💀 Force killing all related processes..."
+	@pkill -f "python.*main.py" 2>/dev/null || true
+	@pkill -f "uvicorn" 2>/dev/null || true
+	@pkill -f "react-scripts" 2>/dev/null || true
+	@pkill -f "npm.*start" 2>/dev/null || true
+	@pkill -f "node.*3000" 2>/dev/null || true
+	@pkill -f "node.*8000" 2>/dev/null || true
+	@for port in 3000 8000; do \
+		lsof -ti:$$port | xargs kill -9 2>/dev/null || true; \
+	done
+	@echo "✅ All processes killed!"
 
 # Clean cache files
 clean:

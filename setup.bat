@@ -27,13 +27,6 @@ if errorlevel 1 (
 echo [INFO] Python version: 
 python --version
 
-echo [INFO] Node.js version: 
-node --version
-
-echo [INFO] npm version: 
-npm --version
-echo.
-
 REM Setup Python backend
 echo [INFO] Setting up Python backend...
 
@@ -49,6 +42,14 @@ echo [INFO] Installing Python dependencies...
 myenv\Scripts\pip install --upgrade pip
 myenv\Scripts\pip install -r requirements.txt
 
+echo [INFO] Node.js version: 
+node --version
+
+@REM echo [INFO] npm version: 
+@REM npm --version
+@REM echo.
+
+
 echo [SUCCESS] Python backend setup complete!
 echo.
 
@@ -63,29 +64,7 @@ if not exist "node_modules" (
 ) else (
     echo [WARNING] Node.js dependencies already installed
 )
-
-cd ..
-
 echo [SUCCESS] React frontend setup complete!
 echo.
-echo 🎉 Setup Complete!
-echo ==================
-echo.
-echo To start the application, open TWO command prompts:
-echo.
-echo Terminal 1 (Backend):
-echo   cd api
-echo   ..\myenv\Scripts\activate
-echo   python main.py
-echo.
-echo Terminal 2 (Frontend):
-echo   cd frontend
-echo   npm start
-echo.
-echo Access Points:
-echo   Frontend: http://localhost:3000
-echo   Backend API: http://localhost:8000
-echo   API Documentation: http://localhost:8000/docs
-echo.
-echo Happy disease detection! 🥔🔬
+
 pause

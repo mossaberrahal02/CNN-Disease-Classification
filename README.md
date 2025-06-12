@@ -1,8 +1,8 @@
-# 🥔 Système de Classification des Maladies de la Pomme de Terre
+# Système de Classification des Maladies de la Pomme de Terre
 
 Système d'intelligence artificielle utilisant un réseau de neurones convolutifs (CNN) pour détecter et classifier les maladies des pommes de terre à partir d'images de feuilles.
 
-## 📋 Prérequis
+## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur votre système :
 
@@ -14,9 +14,9 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur v
 - **Python 3.8+** : `sudo apt install python3 python3-pip python3-venv`
 - **Node.js 14+** : `sudo apt install nodejs npm`
 
-## 🚀 Installation et Configuration
+## Installation et Configuration
 
-### Option 1 : Installation Automatique
+### Installation Automatique
 
 #### Windows
 1. Ouvrez PowerShell ou l'invite de commandes en tant qu'administrateur
@@ -51,7 +51,7 @@ make setup-backend    # Configuration du backend Python
 make setup-frontend   # Configuration du frontend React
 ```
 
-### Option 2 : Installation Manuelle
+### Option 2 : Installation Manuelle (au cas ou le setup.bat ne marche comme il faut)
 
 #### 1. Configuration du Backend (FastAPI)
 
@@ -59,10 +59,8 @@ make setup-frontend   # Configuration du frontend React
 ```powershell
 # Créer l'environnement virtuel Python
 python -m venv myenv
-
 # Activer l'environnement virtuel
 myenv\Scripts\activate
-
 # Installer les dépendances
 pip install --upgrade pip
 pip install -r requirements.txt
@@ -74,17 +72,15 @@ pip install -r requirements.txt
 ```bash
 # Naviguer vers le dossier frontend
 cd frontend
-
 # Installer les dépendances Node.js
 npm install
-
 # Retourner à la racine du projet
 cd ..
 ```
 
-## 🏃‍♂️ Démarrage de l'Application
+## Démarrage de l'Application
 
-### Méthode 1 : Démarrage Manuel (2 terminaux requis)
+###  Démarrage Manuel (2 terminaux requis)
 
 #### Terminal 1 - Backend (API FastAPI)
 
@@ -118,10 +114,8 @@ npm start
 ```bash
 # Démarrer le backend dans un terminal
 make start-backend
-
 # Démarrer le frontend dans un autre terminal
 make start-frontend
-
 # Ou afficher les instructions complètes
 make start
 ```
@@ -132,8 +126,7 @@ Une fois l'application démarrée, vous pouvez accéder aux services suivants :
 - **Interface Utilisateur (Frontend)** : http://localhost:3000
 - **API Backend** : http://localhost:8000
 
-## 🛠️ Commandes Utiles
-
+## Commandes Utiles
 ### Avec Make (Linux/WSL/Git Bash)
 ```bash
 make help           # Afficher toutes les commandes disponibles
@@ -147,6 +140,7 @@ make clean-all      # Suppression complète (venv + node_modules)
 
 **Windows :**
 - Utilisez `Ctrl+C` dans chaque terminal pour arrêter les services
+- et supprimer le dossier frontend/node_modules et myenv/ et le fichier package-lock.json
 
 **Linux/WSL :**
 ```bash

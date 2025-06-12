@@ -1,70 +1,69 @@
 @echo off
-REM 🥔 Potato Disease Classification System Setup Script for Windows
-REM Requires Python 3.8+ and Node.js 14+ to be installed
+REM 🥔 Script de configuration du système de classification des maladies de la pomme de terre pour Windows
+REM Nécessite Python 3.8+ et Node.js 14+ installés
 
-echo 🥔 Potato Disease Classification System Setup
+echo 🥔 Configuration du système de classification des maladies de la pomme de terre
 echo =============================================
 echo.
 
-REM Check if Python is installed
+REM Vérifier si Python est installé
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python is not installed or not in PATH
-    echo Please install Python 3.8+ first from https://python.org
+    echo [ERREUR] Python n'est pas installé ou n'est pas dans le PATH
+    echo Veuillez installer Python 3.8+ à partir de https://python.org
     pause
     exit /b 1
 )
 
-REM Check if Node.js is installed
+REM Vérifier si Node.js est installé
 node --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Node.js is not installed or not in PATH
-    echo Please install Node.js 14+ first from https://nodejs.org
+    echo [ERREUR] Node.js n'est pas installé ou n'est pas dans le PATH
+    echo Veuillez installer Node.js 14+ à partir de https://nodejs.org
     pause
     exit /b 1
 )
 
-echo [INFO] Python version: 
+echo [INFO] Version de Python :
 python --version
 
-REM Setup Python backend
-echo [INFO] Setting up Python backend...
+REM Configuration du backend Python
+echo [INFO] Configuration du backend Python...
 
 if not exist "myenv" (
-    echo [INFO] Creating Python virtual environment...
+    echo [INFO] Création de l'environnement virtuel Python...
     python -m venv myenv
-    echo [SUCCESS] Virtual environment created!
+    echo [SUCCÈS] Environnement virtuel créé !
 ) else (
-    echo [WARNING] Virtual environment already exists
+    echo [AVERTISSEMENT] L'environnement virtuel existe déjà
 )
 
-echo [INFO] Installing Python dependencies...
+echo [INFO] Installation des dépendances Python...
 myenv\Scripts\pip install --upgrade pip
 myenv\Scripts\pip install -r requirements.txt
 
-echo [INFO] Node.js version: 
+echo [INFO] Version de Node.js :
 node --version
 
-@REM echo [INFO] npm version: 
+@REM echo [INFO] Version de npm :
 @REM npm --version
 @REM echo.
 
-
-echo [SUCCESS] Python backend setup complete!
+echo [SUCCÈS] Configuration du backend Python terminée !
 echo.
 
-REM Setup React frontend
-echo [INFO] Setting up React frontend...
+REM Configuration du frontend React
+echo [INFO] Configuration du frontend React...
 cd frontend
 
 if not exist "node_modules" (
-    echo [INFO] Installing Node.js dependencies...
+    echo [INFO] Installation des dépendances Node.js...
     npm install
-    echo [SUCCESS] Frontend dependencies installed!
+    echo [SUCCÈS] Dépendances du frontend installées !
 ) else (
-    echo [WARNING] Node.js dependencies already installed
+    echo [AVERTISSEMENT] Les dépendances Node.js sont déjà installées
 )
-echo [SUCCESS] React frontend setup complete!
+echo [SUCCÈS] Configuration du frontend React terminée !
 echo.
 
 pause

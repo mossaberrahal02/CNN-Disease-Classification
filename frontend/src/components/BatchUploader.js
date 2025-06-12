@@ -66,7 +66,7 @@ const BatchUploader = () => {
       });
       setResults(response.data);
     } catch (err) {
-      setError(err.response?.data?.detail || 'An error occurred during batch prediction');
+      setError(err.response?.data?.detail || 'Une erreur s\'est produite lors de la prédiction par lot');
     } finally {
       setLoading(false);
     }
@@ -83,6 +83,22 @@ const BatchUploader = () => {
 
   const getStatusColor = (status) => {
     return status === 'success' ? 'success' : 'error';
+  };
+  const translateClassName = (className) => {
+    switch (className) {
+      case 'Healthy': return 'Saine';
+      case 'Early Blight': return 'Mildiou Précoce';
+      case 'Late Blight': return 'Brûlure Tardive';
+      default: return className;
+    }
+  };
+
+  const translateStatus = (status) => {
+    switch (status) {
+      case 'success': return 'succès';
+      case 'error': return 'erreur';
+      default: return status;
+    }
   };
 
   return (
@@ -104,10 +120,10 @@ const BatchUploader = () => {
         <input {...getInputProps()} />
         <CloudUpload sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
         <Typography variant="h6" gutterBottom>
-          {isDragActive ? 'Drop the images here' : 'Drag & drop multiple images here, or click to select'}
+          {isDragActive ? 'Déposez les images ici' : 'Glissez-déposez plusieurs images ici, ou cliquez pour sélectionner'}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          Maximum 10 files. Supported formats: JPEG, PNG, BMP, TIFF
+          Maximum 10 fichiers. Formats supportés : JPEG, PNG, BMP, TIFF
         </Typography>
       </Paper>
 
@@ -115,7 +131,7 @@ const BatchUploader = () => {
         <Card sx={{ mb: 3 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Selected Files ({files.length}/10)
+              Fichiers Sélectionnés ({files.length}/10)
             </Typography>
             <Grid container spacing={1} sx={{ mb: 2 }}>
               {files.map((file, index) => (
@@ -135,7 +151,7 @@ const BatchUploader = () => {
               startIcon={loading ? <CircularProgress size={20} /> : <BatchPrediction />}
               fullWidth
             >
-              {loading ? 'Processing Images...' : `Predict All ${files.length} Images`}
+              {loading ? 'Traitement des Images...' : `Prédire Toutes les ${files.length} Images`}
             </Button>
           </CardContent>
         </Card>
@@ -151,7 +167,7 @@ const BatchUploader = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Batch Prediction Results
+              Résultats de Prédiction par Lot
             </Typography>
             
             <Grid container spacing={2} sx={{ mb: 3 }}>
@@ -160,7 +176,7 @@ const BatchUploader = () => {
                   <Typography variant="h4" color="primary">
                     {results.total_files}
                   </Typography>
-                  <Typography variant="body2">Total Files</Typography>
+                  <Typography variant="body2">Total Fichiers</Typography>
                 </Paper>
               </Grid>
               <Grid item xs={4}>
@@ -168,7 +184,7 @@ const BatchUploader = () => {
                   <Typography variant="h4" color="success.main">
                     {results.successful_predictions}
                   </Typography>
-                  <Typography variant="body2">Successful</Typography>
+                  <Typography variant="body2">Réussis</Typography>
                 </Paper>
               </Grid>
               <Grid item xs={4}>
@@ -176,7 +192,7 @@ const BatchUploader = () => {
                   <Typography variant="h4" color="error.main">
                     {results.failed_predictions}
                   </Typography>
-                  <Typography variant="body2">Failed</Typography>
+                  <Typography variant="body2">Échoués</Typography>
                 </Paper>
               </Grid>
             </Grid>
@@ -185,11 +201,11 @@ const BatchUploader = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Filename</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Predicted Class</TableCell>
-                    <TableCell>Confidence</TableCell>
-                    <TableCell>Details</TableCell>
+                    <TableCell>Nom du Fichier</TableCell>
+                    <TableCell>Statut</TableCell>
+                    <TableCell>Classe Prédite</TableCell>
+                    <TableCell>Confiance</TableCell>
+                    <TableCell>Détails</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -198,7 +214,7 @@ const BatchUploader = () => {
                       <TableCell>{result.filename}</TableCell>
                       <TableCell>
                         <Chip
-                          label={result.status || (result.error ? 'error' : 'success')}
+                          label={translateStatus(result.status || (result.error ? 'error' : 'success'))}
                           color={getStatusColor(result.status || (result.error ? 'error' : 'success'))}
                           size="small"
                         />
@@ -206,7 +222,7 @@ const BatchUploader = () => {
                       <TableCell>
                         {result.predicted_class ? (
                           <Chip
-                            label={result.predicted_class}
+                            label={translateClassName(result.predicted_class)}
                             color={getClassColor(result.predicted_class)}
                             size="small"
                           />
@@ -221,13 +237,13 @@ const BatchUploader = () => {
                         {result.class_probabilities && (
                           <Accordion>
                             <AccordionSummary expandIcon={<ExpandMore />}>
-                              <Typography variant="body2">View Probabilities</Typography>
+                              <Typography variant="body2">Voir les Probabilités</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                               <Box>
                                 {Object.entries(result.class_probabilities).map(([className, prob]) => (
                                   <Typography key={className} variant="body2">
-                                    {className}: {(prob * 100).toFixed(1)}%
+                                    {translateClassName(className)}: {(prob * 100).toFixed(1)}%
                                   </Typography>
                                 ))}
                               </Box>
@@ -242,7 +258,7 @@ const BatchUploader = () => {
             </TableContainer>
             
             <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-              Processed on: {new Date(results.timestamp).toLocaleString()}
+              Traité le : {new Date(results.timestamp).toLocaleString()}
             </Typography>
           </CardContent>
         </Card>

@@ -20,10 +20,10 @@ import axios from 'axios';
 const API_BASE_URL = 'http://localhost:8000';
 
 const API_ENDPOINTS = [
-  { path: '/', method: 'GET', description: 'Root endpoint' },
-  { path: '/ping', method: 'GET', description: 'Ping test' },
-  { path: '/health', method: 'GET', description: 'Health check' },
-  { path: '/classes', method: 'GET', description: 'Available classes' },
+  { path: '/', method: 'GET', description: 'Point d\'entrée principal' },
+  { path: '/ping', method: 'GET', description: 'Test de ping' },
+  { path: '/health', method: 'GET', description: 'Vérification de santé' },
+  { path: '/classes', method: 'GET', description: 'Classes disponibles' },
 ];
 
 const ApiTester = () => {
@@ -63,19 +63,18 @@ const ApiTester = () => {
 
   return (
     <Box>
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
+      <Card sx={{ mb: 3 }}>        <CardContent>
           <Typography variant="h6" gutterBottom>
-            API Endpoint Tester
+            Testeur de Point d'Accès API
           </Typography>
           
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} sm={8}>
               <FormControl fullWidth>
-                <InputLabel>Select Endpoint</InputLabel>
+                <InputLabel>Sélectionner un Point d'Accès</InputLabel>
                 <Select
                   value={selectedEndpoint}
-                  label="Select Endpoint"
+                  label="Sélectionner un Point d'Accès"
                   onChange={(e) => setSelectedEndpoint(e.target.value)}
                 >
                   {API_ENDPOINTS.map((endpoint) => (
@@ -95,21 +94,19 @@ const ApiTester = () => {
                 startIcon={loading ? <CircularProgress size={20} /> : <Send />}
                 fullWidth
               >
-                {loading ? 'Testing...' : 'Test Endpoint'}
+                {loading ? 'Test en cours...' : 'Tester le Point d\'Accès'}
               </Button>
             </Grid>
           </Grid>
           
           <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Test individual API endpoints to verify functionality
+            Testez les points d'accès API individuels pour vérifier leur fonctionnement
           </Typography>
         </CardContent>
-      </Card>
-
-      {error && (
+      </Card>      {error && (
         <Alert severity="error" sx={{ mb: 3 }}>
           <Typography variant="subtitle2">
-            Error {error.status}: {error.statusText || error.message}
+            Erreur {error.status}: {error.statusText || error.message}
           </Typography>
           {error.data && (
             <Typography variant="body2" sx={{ mt: 1 }}>
@@ -123,7 +120,7 @@ const ApiTester = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Response
+              Réponse
             </Typography>
             
             <Grid container spacing={2} sx={{ mb: 2 }}>
@@ -131,8 +128,7 @@ const ApiTester = () => {
                 <Paper sx={{ p: 1, textAlign: 'center' }}>
                   <Typography variant="h6" color="success.main">
                     {response.status}
-                  </Typography>
-                  <Typography variant="caption">Status</Typography>
+                  </Typography>                  <Typography variant="caption">Statut</Typography>
                 </Paper>
               </Grid>
               <Grid item xs={3}>
@@ -140,7 +136,7 @@ const ApiTester = () => {
                   <Typography variant="h6" color="primary.main">
                     {response.responseTime}ms
                   </Typography>
-                  <Typography variant="caption">Response Time</Typography>
+                  <Typography variant="caption">Temps de Réponse</Typography>
                 </Paper>
               </Grid>
               <Grid item xs={6}>
@@ -148,14 +144,14 @@ const ApiTester = () => {
                   <Typography variant="body2" fontWeight="bold">
                     {response.statusText}
                   </Typography>
-                  <Typography variant="caption">Status Text</Typography>
+                  <Typography variant="caption">Texte de Statut</Typography>
                 </Paper>
               </Grid>
             </Grid>
 
             <Typography variant="subtitle1" gutterBottom sx={{ mt: 3 }}>
               <Code sx={{ verticalAlign: 'middle', mr: 1 }} />
-              Response Data:
+              Données de Réponse :
             </Typography>
             
             <Paper sx={{ p: 2, backgroundColor: '#f5f5f5' }}>

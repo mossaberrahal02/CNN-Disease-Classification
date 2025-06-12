@@ -60,9 +60,8 @@ const ImageUploader = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setPrediction(response.data);
-    } catch (err) {
-      setError(err.response?.data?.detail || 'An error occurred during prediction');
+      setPrediction(response.data);    } catch (err) {
+      setError(err.response?.data?.detail || 'Une erreur s\'est produite lors de la prédiction');
     } finally {
       setLoading(false);
     }
@@ -73,13 +72,20 @@ const ImageUploader = () => {
     if (confidence >= 0.6) return 'warning';
     return 'error';
   };
-
   const getClassColor = (className) => {
     switch (className) {
       case 'Healthy': return 'success';
       case 'Early Blight': return 'warning';
       case 'Late Blight': return 'error';
       default: return 'default';
+    }
+  };
+  const translateClassName = (className) => {
+    switch (className) {
+      case 'Healthy': return 'Saine';
+      case 'Early Blight': return 'Mildiou Précoce';
+      case 'Late Blight': return 'Brûlure Tardive';
+      default: return className;
     }
   };
 
@@ -99,33 +105,28 @@ const ImageUploader = () => {
           },
         }}
       >
-        <input {...getInputProps()} />
-        <CloudUpload sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
+        <input {...getInputProps()} />        <CloudUpload sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
         <Typography variant="h6" gutterBottom>
-          {isDragActive ? 'Drop the image here' : 'Drag & drop an image here, or click to select'}
+          {isDragActive ? 'Déposez l\'image ici' : 'Glissez-déposez une image ici, ou cliquez pour sélectionner'}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          Supported formats: JPEG, PNG, BMP, TIFF
+          Formats supportés : JPEG, PNG, BMP, TIFF
         </Typography>
-      </Paper>
-
-      {preview && (
-        <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid item xs={12} md={6}>
-            <Card>
+      </Paper>      {preview && (        <Grid container spacing={3} sx={{ mb: 3, alignItems: 'stretch' }}>
+          <Grid item xs={12} lg={5}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardMedia
                 component="img"
-                height="300"
+                height="350"
                 image={preview}
                 alt="Preview"
-                sx={{ objectFit: 'contain' }}
+                sx={{ objectFit: 'contain', flex: '1' }}
               />
-              <CardContent>
+              <CardContent sx={{ mt: 'auto' }}>
                 <Typography variant="h6" gutterBottom>
                   {file.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Size: {(file.size / 1024 / 1024).toFixed(2)} MB
+                </Typography>                <Typography variant="body2" color="textSecondary">
+                  Taille : {(file.size / 1024 / 1024).toFixed(2)} MB
                 </Typography>
                 <Button
                   variant="contained"
@@ -135,36 +136,42 @@ const ImageUploader = () => {
                   sx={{ mt: 2 }}
                   fullWidth
                 >
-                  {loading ? 'Analyzing...' : 'Predict Disease'}
+                  {loading ? 'Analyse en cours...' : 'Prédire la Maladie'}
                 </Button>
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            {error && (
+          <Grid item xs={12} lg={7}>            {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 {error}
               </Alert>
             )}
 
             {prediction && (
-              <Card>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Prediction Results
+                    Résultats de Prédiction
                   </Typography>
                   
-                  <Box sx={{ mb: 3 }}>
-                    <Chip
-                      label={prediction.predicted_class}
+                  <Box sx={{ mb: 3 }}>                    <Chip
+                      label={translateClassName(prediction.predicted_class)}
                       color={getClassColor(prediction.predicted_class)}
                       size="large"
-                      sx={{ mb: 2, fontSize: '1.1rem', fontWeight: 'bold' }}
+                      variant="filled"
+                      clickable={false}
+                      sx={{ 
+                        mb: 2, 
+                        fontSize: '1.1rem', 
+                        fontWeight: 'bold',
+                        pointerEvents: 'none',
+                        cursor: 'default'
+                      }}
                     />
                     
                     <Typography variant="body1" gutterBottom>
-                      Confidence: {(prediction.confidence * 100).toFixed(1)}%
+                      Confiance : {(prediction.confidence * 100).toFixed(1)}%
                     </Typography>
                     
                     <LinearProgress
@@ -173,16 +180,22 @@ const ImageUploader = () => {
                       color={getConfidenceColor(prediction.confidence)}
                       sx={{ height: 8, borderRadius: 4 }}
                     />
-                  </Box>
-
-                  <Typography variant="subtitle1" gutterBottom>
-                    All Class Probabilities:
+                  </Box>                  <Typography variant="subtitle1" gutterBottom>
+                    Toutes les Probabilités de Classe :
                   </Typography>
                   
-                  <PredictionChart probabilities={prediction.class_probabilities} />
+                  <Box sx={{ 
+                    mt: 2, 
+                    mb: 2, 
+                    width: '100%',
+                    minWidth: '400px',
+                    overflow: 'hidden'
+                  }}>
+                    <PredictionChart probabilities={prediction.class_probabilities} />
+                  </Box>
                   
                   <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-                    Analyzed on: {new Date(prediction.timestamp).toLocaleString()}
+                    Analysé le : {new Date(prediction.timestamp).toLocaleString()}
                   </Typography>
                 </CardContent>
               </Card>

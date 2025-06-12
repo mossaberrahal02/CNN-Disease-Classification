@@ -4,7 +4,6 @@ import { CssBaseline, Container, Typography, Box, Tabs, Tab } from '@mui/materia
 import './App.css';
 import ImageUploader from './components/ImageUploader';
 import BatchUploader from './components/BatchUploader';
-import HealthStatus from './components/HealthStatus';
 import ApiTester from './components/ApiTester';
 
 const theme = createTheme({
@@ -60,22 +59,18 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="lg">
-        <Box sx={{ py: 4 }}>
+      <Container maxWidth="lg">        <Box sx={{ py: 4 }}>
           <Typography variant="h4" component="h1" align="center" color="primary" gutterBottom>
-            🥔 Potato Disease Classification System
+            🥔 Système de Classification des Maladies de la Pomme de Terre
+          </Typography>          <Typography variant="h6" align="center" color="textSecondary" paragraph>
+            Téléchargez des images de feuilles de pomme de terre pour détecter le Mildiou Précoce, la Brûlure Tardive, ou les plantes Saines
           </Typography>
-          <Typography variant="h6" align="center" color="textSecondary" paragraph>
-            Upload potato leaf images to detect Early Blight, Late Blight, or Healthy plants
-          </Typography>
-          
-          <HealthStatus />
           
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 3 }}>
-            <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
-              <Tab label="Single Image Prediction" />
-              <Tab label="Batch Prediction" />
-              <Tab label="API Tester" />
+            <Tabs value={tabValue} onChange={handleTabChange} aria-label="onglets de navigation">
+              <Tab label="Prédiction Image Unique" />
+              <Tab label="Prédiction par Lot" />
+              <Tab label="Testeur d'API" />
             </Tabs>
           </Box>
           

@@ -1,4 +1,75 @@
-# CNN-Disease-Classification
+# 🥔 Potato Disease Classification System
+
+A full-stack machine learning application that uses CNN to classify potato diseases from leaf images. The system can detect Early Blight, Late Blight, and identify Healthy potato plants.
+
+### Option 1: Using Makefile (Linux/macOS/WSL)
+```bash
+make setup    # Setup both backend and frontend
+make start    # Get instructions to start both services
+```
+
+### Option 2: Using Setup Scripts
+
+**Linux/macOS/Git Bash:**
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+**Windows Command Prompt:**
+```cmd
+setup.bat
+```
+
+### Option 3: Manual Setup
+
+**Backend Setup:**
+```bash
+python3 -m venv myenv
+source myenv/bin/activate  # On Windows: myenv\Scripts\activate
+pip install -r requirements.txt
+```
+
+**Frontend Setup:**
+```bash
+cd frontend
+npm install
+```
+
+## 📋 Prerequisites
+
+- Python 3.8+
+- Node.js 14+ and npm
+- Git (optional, for cloning)
+
+## 🏃‍♂️ Running the Application
+
+Open **two terminals**:
+
+**Terminal 1 (Backend):**
+```bash
+cd api
+source ../myenv/bin/activate  # Windows: ..\myenv\Scripts\activate
+python main.py
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd frontend
+npm start
+```
+
+Access the application:
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:8000
+- **API Docs:** http://localhost:8000/docs
+
+
+
+
+
+
+## Architecture
 
 1- Direct Backend Inference
 

@@ -24,7 +24,7 @@ import {
 import { CloudUpload, BatchPrediction, ExpandMore } from '@mui/icons-material';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://172.189.136.13:8000';
 
 const BatchUploader = () => {
   const [files, setFiles] = useState([]);

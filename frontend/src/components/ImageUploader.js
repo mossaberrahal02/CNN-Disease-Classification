@@ -18,7 +18,7 @@ import { CloudUpload, PhotoCamera } from '@mui/icons-material';
 import axios from 'axios';
 import PredictionChart from './PredictionChart';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://172.189.136.13:8000';
 
 const ImageUploader = () => {
   const [file, setFile] = useState(null);

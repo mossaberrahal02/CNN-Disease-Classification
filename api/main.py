@@ -1,7 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import uvicorn
 import numpy as np
 from io import BytesIO
 from PIL import Image
@@ -190,6 +189,3 @@ async def predict_batch(files: List[UploadFile] = File(...)):
         'results': results,
         'timestamp': datetime.now().isoformat()
     }
-
-if __name__ == "__main__":
-    uvicorn.run(app, port=8000, host="localhost")

@@ -1,8 +1,8 @@
 @echo off
-REM 🥔 Script de configuration du système de classification des maladies de la pomme de terre pour Windows
+REM Script de configuration du système de classification des maladies de la pomme de terre pour Windows
 REM Nécessite Python 3.8+ et Node.js 14+ installés
 
-echo 🥔 Configuration du système de classification des maladies de la pomme de terre
+echo Configuration du système de classification des maladies de la pomme de terre
 echo =============================================
 echo.
 

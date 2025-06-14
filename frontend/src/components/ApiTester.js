@@ -17,7 +17,7 @@ import {
 import { Send, Code } from '@mui/icons-material';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
 const API_ENDPOINTS = [
   { path: '/', method: 'GET', description: 'Point d\'entrée principal' },

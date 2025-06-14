@@ -7,16 +7,14 @@ Système d'intelligence artificielle utilisant un réseau de neurones convolutif
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur votre système :
 
 ### Pour Windows :
-- **Python 3.8+** : Téléchargez depuis [python.org](https://python.org)
-- **Node.js 14+** : Téléchargez depuis [nodejs.org](https://nodejs.org)
+- **Python 3.8+** : Téléchargez depuis https://python.org
+- **Node.js 14+** : Téléchargez depuis https://nodejs.org
 
 ### Pour Linux/WSL :
 - **Python 3.8+** : `sudo apt install python3 python3-pip python3-venv`
 - **Node.js 14+** : `sudo apt install nodejs npm`
 
-## Installation et Configuration
-
-### Installation Automatique
+## Installation et Configuration automatique
 
 #### Windows
 1. Ouvrez PowerShell ou l'invite de commandes en tant qu'administrateur
@@ -24,34 +22,12 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur v
    ```powershell
    cd C:\chemin\vers\le\projet
    ```
-3. Exécutez le script de configuration :
+3. Exécutez le script de configuration de l'environement virtuel de python et telechargement des modules pour javascript:
    ```powershell
    .\setup.bat
    ```
 
-#### Linux/WSL
-1. Ouvrez un terminal
-2. Naviguez vers le répertoire du projet :
-   ```bash
-   cd /chemin/vers/le/projet
-   ```
-3. Rendez le script exécutable et lancez-le :
-   ```bash
-   chmod +x setup.sh
-   ./setup.sh
-   ```
-
-#### Utilisation de Make (Linux/WSL/Git Bash)
-```bash
-# Configuration complète du projet
-make setup
-
-# Ou configuration séparée
-make setup-backend    # Configuration du backend Python
-make setup-frontend   # Configuration du frontend React
-```
-
-### Option 2 : Installation Manuelle (au cas ou le setup.bat ne marche comme il faut)
+### Installation Manuelle (au cas ou le setup.bat ne marche pas comme il faut)
 
 #### 1. Configuration du Backend (FastAPI)
 
@@ -80,7 +56,7 @@ cd ..
 
 ## Démarrage de l'Application
 
-###  Démarrage Manuel (2 terminaux requis)
+### 2 terminaux requis
 
 #### Terminal 1 - Backend (API FastAPI)
 
@@ -109,7 +85,7 @@ cd frontend
 npm start
 ```
 
-### Méthode 2 : Utilisation de Make (Linux/WSL/Git Bash)
+### Utilisation de Make (Linux/WSL/Git Bash) pour le demarage des services
 
 ```bash
 # Démarrer le backend dans un terminal
@@ -146,12 +122,7 @@ make clean-all      # Suppression complète (venv + node_modules)
 ```bash
 # Arrêter tous les processus liés au projet
 make stop
-
-# Ou manuellement
-pkill -f "python.*main.py"
-pkill -f "npm.*start"
-```
-
+make clean-all
 
 1. Accédez à l'interface web : http://localhost:3000
 2. Téléchargez une image de feuille de pomme de terre

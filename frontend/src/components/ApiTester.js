@@ -17,7 +17,7 @@ import {
 import { Send, Code } from '@mui/icons-material';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://your-production-backend-url.azurewebsites.net';
+const API_BASE_URL = 'http://172.189.136.13';
 
 const API_ENDPOINTS = [
   { path: '/', method: 'GET', description: 'Point d\'entrée principal' },

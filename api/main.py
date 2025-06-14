@@ -16,20 +16,17 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load model with error handling
 try:
-    MODEL_PATH = "/home/merrahal/Desktop/detection/models/potatoes_v1.h5"
+    MODEL_PATH = "/home/mossaberrahal/Desktop/detection/models/potatoes_v1.h5"
     if not os.path.exists(MODEL_PATH):
-        # Fallback to relative path
         MODEL_PATH = "../models/potatoes_v1.h5"
     MODEL = tf.keras.models.load_model(MODEL_PATH)
     MODEL_LOADED = True
@@ -38,7 +35,7 @@ except Exception as e:
     MODEL = None
     MODEL_LOADED = False
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
-SUPPORTED_FORMATS = [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]#check wah
+SUPPORTED_FORMATS = [".jpg", ".jpeg", ".png", ".bmp", ".tiff"]
 
 @app.get("/")
 async def root():
@@ -106,17 +103,14 @@ async def predict(file: UploadFile = File(...)):
         )
     
     try:
-        # Read and process image
         image = read_file_as_image(await file.read())
         img_batch = np.expand_dims(image, 0)
         
-        # Make prediction
         predictions = MODEL.predict(img_batch)
         predicted_class_index = np.argmax(predictions[0])
         predicted_class = CLASS_NAMES[predicted_class_index]
         confidence = float(np.max(predictions[0]))
         
-        # Get all class probabilities
         class_probabilities = {
             CLASS_NAMES[i]: float(predictions[0][i]) 
             for i in range(len(CLASS_NAMES))
@@ -138,7 +132,7 @@ async def predict_batch(files: List[UploadFile] = File(...)):
     if not MODEL_LOADED:
         raise HTTPException(status_code=503, detail="Model not loaded")
     
-    if len(files) > 10:  # Limit batch size
+    if len(files) > 10:
         raise HTTPException(status_code=400, detail="Maximum 10 files allowed per batch")
     
     results = []
@@ -152,11 +146,9 @@ async def predict_batch(files: List[UploadFile] = File(...)):
                 })
                 continue
             
-            # Process image
             image = read_file_as_image(await file.read())
             img_batch = np.expand_dims(image, 0)
             
-            # Make prediction
             predictions = MODEL.predict(img_batch)
             predicted_class_index = np.argmax(predictions[0])
             predicted_class = CLASS_NAMES[predicted_class_index]

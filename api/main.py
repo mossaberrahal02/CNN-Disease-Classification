@@ -49,11 +49,11 @@ async def root():
         "status": "running"
     }
 
-@app.get("/ping")
+@app.get("/api/ping")
 async def test():
     return {"message": "Hello, World!", "timestamp": datetime.now().isoformat()}
 
-@app.get("/health")
+@app.get("/api/health")
 async def health_check():
     """Comprehensive health check including model status"""
     return {
@@ -65,7 +65,7 @@ async def health_check():
         "timestamp": datetime.now().isoformat()
     }
 
-@app.get("/classes")
+@app.get("/api/classes")
 async def get_classes():
     """Get available classification classes"""
     return {
@@ -93,7 +93,7 @@ def validate_image(file: UploadFile) -> bool:
     file_extension = os.path.splitext(file.filename.lower())[1]
     return file_extension in SUPPORTED_FORMATS
 
-@app.post("/predict")
+@app.post("/api/predict")
 async def predict(file: UploadFile = File(...)):
     """Predict disease class for a single image"""
     if not MODEL_LOADED:
@@ -132,7 +132,7 @@ async def predict(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
-@app.post("/predict/batch")
+@app.post("/api/predict/batch")
 async def predict_batch(files: List[UploadFile] = File(...)):
     """Predict disease classes for multiple images"""
     if not MODEL_LOADED:
